@@ -1,0 +1,97 @@
+
+//**** main
+
+
+extern int call_svc(void);
+int main(void){
+  call_svc();
+  while(1);
+}
+
+//***** CALL_SCV
+			EXPORT call_svc
+call_svc  
+		    MOV r0,r13
+		    svc #0x000000FF
+		    NOP
+		    B .
+		    ENDP
+				
+			END
+
+
+
+//RESET HANDLER WITH SVC
+; Reset Handler
+
+Reset_Handler   PROC
+                EXPORT  Reset_Handler             [WEAK]                                            
+				NOP
+				MOV		R0, #3
+				MSR		CONTROL, R0
+				LDR		SP, =Stack_Mem
+				
+				NOP
+				IMPORT __main
+				LDR 	R0,=__main
+				BX 		R0
+				
+
+InfLoop         B      	InfLoop
+                ENDP
+//
+// ********************** SVC Handler
+SVC_Handler     PROC
+                EXPORT  SVC_Handler               [WEAK]
+				MOV R8, R0 ;address of psp
+				STMFD SP!, {R4-R11, LR}
+				CMP LR, #0xFFFFFFFD
+				MRSEQ	R1, psp	
+				MRSNE	R1, msp
+				LDR R0, [R1, #24]	;0x000000DC
+				LDR R0, [R0,#-4]	;0x000000D8
+				BIC R0, #0xFF000000
+				LSR R0, #16
+			
+				;
+				mov r2,#8 ; un immediato è 8 bit
+				mov r3,#128
+for
+				CMP r2,#0
+				BLT endfor
+				TST r0,r3
+				BEQ e1
+				ADD r4,#1
+				LSL r4,#1
+				ADD r4,#1
+				LSL r4,#1
+				ADD r4,#1
+				LSL r4,#1
+				B fine
+e1
+				LSL r4,#3
+fine
+				SUB r2,#1
+				LSR r3,#1
+				B for
+
+endfor
+				LSR r4,#4 ; fix 
+				STR R4,[R8,#-32]
+				bne uscita
+				nop
+				
+uscita		
+				LDMFD SP!, {R4-R11,LR}
+				BX LR
+				
+                ENDP
+
+
+
+
+//
+
+			
+			
+			
