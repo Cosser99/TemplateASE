@@ -3,18 +3,51 @@
 #include "RIT.h"
 #include "../led/led.h"
 #include "../GLCD/GLCD.h"
+#include "../timer/timer.h"
+#include "../music/music.h"
 
 #include <stdio.h>
 
+#define UPTICKS 1
 
 volatile int down_0 = 0;
 volatile int down_1 = 0;
 volatile int down_2 = 0;
+ 
+static int isplaying=1;
 
+
+extern NOTE song[];
+NOTE *actual=song;
+void PlayMusic()
+{
+	if(isplaying){
+		static int currentNote;
+		static int ticks = 0;
+		if(!isNotePlaying())
+		{
+			++ticks;
+			if(ticks == UPTICKS)
+			{
+				ticks = 0;
+				playNote(actual[currentNote++]);
+			}
+		}
+
+		if(actual[currentNote].freq==end)
+		{
+			isplaying=0;
+		}
+
+	}
+}
 
 void RIT_IRQHandler (void)
 {			
 
+	PlayMusic();
+	
+	
 /*************************INT0***************************/
 if(down_0 !=0){
 	down_0++;

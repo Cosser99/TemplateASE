@@ -680,6 +680,26 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Image</GroupName>
+          <Files>
+            <File>
+              <FileName>Image.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\Image\Image.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>music</GroupName>
+          <Files>
+            <File>
+              <FileName>music.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\music\music.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>
@@ -1303,6 +1323,26 @@
               <FileName>lib_joystick.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Source\joystick\lib_joystick.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Image</GroupName>
+          <Files>
+            <File>
+              <FileName>Image.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\Image\Image.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>music</GroupName>
+          <Files>
+            <File>
+              <FileName>music.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\music\music.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -7,15 +7,30 @@
 #include "button.h"
 #include "RIT/RIT.h"
 #include "joystick/joystick.h"
+#include "TouchPanel.h"
+#include "Image/image.h"
+
 #ifdef SIMULATOR
 extern uint8_t ScaleFlag; // <- ScaleFlag needs to visible in order for the emulator to find the symbol (can be placed also inside system_LPC17xx.h but since it is RO, it needs more work)
 #endif
 
 //ASM FUNCTION
 extern uint8_t prova();
-extern uint8_t ciao();
+
+extern pt imageInit[3100];
 
 //
+
+void DrawInit(uint8_t dx,uint8_t dy,uint16_t col)
+{
+	int i,j;
+	for(i=0;i<3100;i++)
+		{
+			LCD_SetPoint(imageInit[i].x+dx,imageInit[i].y+dy,col);
+		}
+
+}
+
 int main(void)
 {
 	
@@ -27,14 +42,22 @@ int main(void)
   LCD_Initialization();	//RICORDA DI TOGLIERE IN CASO DI USO DI LED
 	LPC_SC -> PCONP |= (1 << 22);  // TURN ON TIMER 2
 	LPC_SC -> PCONP |= (1 << 23);  // TURN ON TIMER 3	
-	//init_timer(...
-	//enable_timer(...
-	//disable_timer(...
-	//init_RIT(0x1234)
-	//enable_RIT
-
+	//Turn ON DAC
+	
+	
+	//TP_Init();
+	//TouchPanel_Calibrate();
+	//
+	LCD_Clear(Cyan);
+	DrawInit(50,60,Black);
+	init_RIT(0x0000FFFF);
+	enable_RIT();
 	LPC_SC->PCON |= 0x1;									/* power-down	mode										*/
 	LPC_SC->PCON &= ~(0x2);						
+	
+	LPC_PINCON->PINSEL1 |= (1<<21);
+	LPC_PINCON->PINSEL1 &= ~(1<<20);
+	LPC_GPIO0->FIODIR |= (1<<26);
 	
   while (1)	
   {
